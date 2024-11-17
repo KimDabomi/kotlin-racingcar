@@ -4,8 +4,9 @@ import racingcar.service.RacingCarService
 
 class RacingCarController(private val racingCarService: RacingCarService) {
     fun start() {
-        val numberCars = racingCarService.startNumberCars()
+        val racingCars = racingCarService.getRacingCars()
         val tryCount = racingCarService.startTryCount()
-        racingCarService.startRace(numberCars, tryCount)
+        val raceMap = racingCarService.startRace(racingCars, tryCount)
+        racingCarService.startWinner(raceMap)
     }
 }
