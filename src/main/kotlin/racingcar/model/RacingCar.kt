@@ -1,5 +1,7 @@
 package racingcar.model
 
+private const val FORWARD_STATUS = "-"
+
 class RacingCar(private val carNumber: Int) {
     var position: Int = 0
         private set
@@ -11,6 +13,6 @@ class RacingCar(private val carNumber: Int) {
     }
 
     override fun toString(): String {
-        return "-".repeat(position)
+        return FORWARD_STATUS.repeat(position)
     }
 }
