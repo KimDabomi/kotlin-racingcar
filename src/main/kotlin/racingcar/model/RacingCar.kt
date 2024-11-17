@@ -1,10 +1,11 @@
 package racingcar.model
 
-private const val FORWARD_STATUS = "-"
+import racingcar.model.exception.RacingCarException
 
-class RacingCar(private val carNumber: Int) {
+private const val SPLIT_UNIT = ","
+
+class RacingCar(val carName: String) {
     var position: Int = 0
-        private set
 
     fun race(forwardCondition: () -> Boolean) {
         if (forwardCondition()) {
@@ -13,6 +14,22 @@ class RacingCar(private val carNumber: Int) {
     }
 
     override fun toString(): String {
-        return FORWARD_STATUS.repeat(position)
+        return "$carName: ${"-".repeat(position)}"
+    }
+
+    companion object {
+        fun getCarNames(userCarName: String): List<String> {
+            val carNameList: MutableList<String> = ArrayList()
+            val carNames = splitCarName(userCarName)
+            for (carName in carNames) {
+                RacingCarException.checkCarNameTypeAndSize(carName)
+                carNameList.add(carName.trim { it <= ' ' })
+            }
+            return carNameList
+        }
+
+        private fun splitCarName(userCarName: String): Array<String> {
+            return userCarName.split(SPLIT_UNIT.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        }
     }
 }
