@@ -3,16 +3,18 @@ package racingcar.service
 import racingcar.model.Forward
 import racingcar.model.RacingCar
 import racingcar.model.TryCount
+import racingcar.model.Winner
 import racingcar.view.InputView
 import racingcar.view.ResultView
 
-class RacingCarService {
-    var tryCount: TryCount = TryCount()
-    var forward: Forward = Forward()
-
-    fun startNumberCars(): Int {
+class RacingCarService(
+    private val tryCount: TryCount,
+    private val forward: Forward,
+) {
+    fun getRacingCars(): List<String> {
         InputView.readNumberCars()
-        return readln().toInt()
+        val userInput: String = readln()
+        return RacingCar.getCarNames(userInput)
     }
 
     fun startTryCount(): Int {
@@ -22,20 +24,25 @@ class RacingCarService {
     }
 
     fun startRace(
-        numberCars: Int,
+        carNames: List<String>,
         tryCount: Int,
     ): List<RacingCar> {
         ResultView.showRacingStart()
 
-        val raceCars = (1..numberCars).map { RacingCar(it) }
+        val raceMap = carNames.map { RacingCar(it) }
 
         for (i in 0 until tryCount) {
-            raceCars.forEach { car ->
+            raceMap.forEach { car ->
                 car.race { forward.pickRandomNumberInRange() >= 4 }
             }
-            ResultView.showRacingResult(raceCars)
+            ResultView.showRacingResult(raceMap)
         }
 
-        return raceCars
+        return raceMap
+    }
+
+    fun startWinner(raceMap: List<RacingCar>) {
+        val winners: List<String> = Winner.getWinners(raceMap)
+        ResultView.showWinner(winners)
     }
 }
