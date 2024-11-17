@@ -80,7 +80,7 @@ class FourBasicOperations {
 
         return operators
     }
-    
+
     private fun evaluate(
         numbers: List<Int>,
         operators: List<Operator>,
@@ -102,3 +102,4 @@ class FourBasicOperations {
         }
         return total
     }
+}
