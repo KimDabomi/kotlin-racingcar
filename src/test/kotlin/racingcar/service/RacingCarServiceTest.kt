@@ -4,30 +4,40 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.mockkStatic
+import io.mockk.verify
 import racingcar.model.Forward
+import racingcar.model.RacingCar
 import racingcar.model.TryCount
+import racingcar.model.Winner
+import racingcar.view.ResultView
 
 class RacingCarServiceTest : StringSpec({
+    "getRacingCars test - 사용자 입력 리스트로 반환" {
+        val tryCount = mockk<TryCount>()
+        val forward = mockk<Forward>()
 
-    "startNumberCars test - 사용자 입력 정수로 반환" {
-        val service = RacingCarService()
+        val service = RacingCarService(tryCount, forward)
+
         mockkStatic("kotlin.io.ConsoleKt")
-        every { readln() } returns "5"
+        every { readln() } returns "kim,da,bo,mi"
 
-        val result = service.startNumberCars()
+        val result = service.getRacingCars()
 
-        result shouldBe 5
+        result shouldBe listOf("kim", "da", "bo", "mi")
     }
 
     "startTryCount test - 검증된 시도 횟수 반환" {
-        val mockTryCount = mockk<TryCount>()
-        val service = RacingCarService().apply { tryCount = mockTryCount }
+        val tryCount = mockk<TryCount>()
+        val forward = mockk<Forward>()
+
+        val service = RacingCarService(tryCount, forward)
 
         mockkStatic("kotlin.io.ConsoleKt")
         every { readln() } returns "10"
 
-        every { mockTryCount.getTryCount(any()) } answers { firstArg() }
+        every { tryCount.getTryCount(any()) } answers { firstArg() }
 
         val result = service.startTryCount()
 
@@ -35,16 +45,44 @@ class RacingCarServiceTest : StringSpec({
     }
 
     "startRace test - 레이싱 결과 반환" {
-        val mockForward = mockk<Forward>()
-        val service = RacingCarService().apply { forward = mockForward }
+        val tryCount = mockk<TryCount>()
+        val forward = mockk<Forward>()
 
-        every { mockForward.pickRandomNumberInRange() } returnsMany listOf(4, 5, 3, 4, 5, 6)
+        val service = RacingCarService(tryCount, forward)
 
-        val numberCars = 2
-        val tryCount = 3
-        val raceCars = service.startRace(numberCars, tryCount)
+        every { forward.pickRandomNumberInRange() } returnsMany listOf(4, 5, 3, 4, 5, 6)
 
-        raceCars[0].position shouldBe 2
+        val racingCars = listOf("kim", "da", "bo", "mi")
+        val tryCountValue = 3
+        val raceCars = service.startRace(racingCars, tryCountValue)
+
+        raceCars[0].position shouldBe 3
         raceCars[1].position shouldBe 3
+        raceCars[2].position shouldBe 2
+        raceCars[3].position shouldBe 3
+    }
+
+    "startWinner test - 우승자 출력" {
+        val tryCount = mockk<TryCount>()
+        val forward = mockk<Forward>()
+
+        val service = RacingCarService(tryCount, forward)
+
+        val racingCars =
+            listOf(
+                RacingCar("kim").apply { position = 4 },
+                RacingCar("da").apply { position = 4 },
+                RacingCar("bo").apply { position = 3 },
+                RacingCar("mi").apply { position = 2 },
+            )
+
+        mockkObject(Winner)
+        mockkObject(ResultView)
+
+        every { Winner.getWinners(racingCars) } returns listOf("kim", "da")
+
+        service.startWinner(racingCars)
+
+        verify { ResultView.showWinner(listOf("kim", "da")) }
     }
 })
