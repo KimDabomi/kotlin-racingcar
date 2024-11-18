@@ -23,7 +23,7 @@ class RacingCarServiceTest : StringSpec({
         mockkStatic("kotlin.io.ConsoleKt")
         every { readln() } returns "kim,da,bo,mi"
 
-        val result = service.getRacingCars()
+        val result = service.readRacingCarNames()
 
         result shouldBe listOf("kim", "da", "bo", "mi")
     }
@@ -39,7 +39,7 @@ class RacingCarServiceTest : StringSpec({
 
         every { tryCount.getTryCount(any()) } answers { firstArg() }
 
-        val result = service.startTryCount()
+        val result = service.readTryCount()
 
         result shouldBe 10
     }
@@ -54,7 +54,7 @@ class RacingCarServiceTest : StringSpec({
 
         val racingCars = listOf("kim", "da", "bo", "mi")
         val tryCountValue = 3
-        val raceCars = service.startRace(racingCars, tryCountValue)
+        val raceCars = service.runRace(racingCars, tryCountValue)
 
         raceCars[0].position shouldBe 3
         raceCars[1].position shouldBe 3
@@ -81,7 +81,7 @@ class RacingCarServiceTest : StringSpec({
 
         every { Winner.determineWinners(racingCars) } returns listOf("kim", "da")
 
-        service.startWinner(racingCars)
+        service.determineAndShowWinners(racingCars)
 
         verify { ResultView.showWinner(listOf("kim", "da")) }
     }

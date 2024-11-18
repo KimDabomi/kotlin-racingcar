@@ -14,7 +14,7 @@ class RacingCarTest : StringSpec({
             row("kim12"),
         ) { userCarName ->
             shouldThrow<IllegalArgumentException> {
-                RacingCar.getCarNames(userCarName)
+                RacingCar.getRacingCarNames(userCarName)
             }
         }
     }
