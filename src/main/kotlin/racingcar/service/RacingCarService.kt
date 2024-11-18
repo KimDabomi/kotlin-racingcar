@@ -29,20 +29,20 @@ class RacingCarService(
     ): List<RacingCar> {
         ResultView.showRacingStart()
 
-        val raceMap = carNames.map { RacingCar(it) }
+        val raceCars = carNames.map { RacingCar(it) }
 
         for (i in 0 until tryCount) {
-            raceMap.forEach { car ->
+            raceCars.forEach { car ->
                 car.race { forward.pickRandomNumberInRange() >= 4 }
             }
-            ResultView.showRacingResult(raceMap)
+            ResultView.showRacingResult(raceCars)
         }
 
-        return raceMap
+        return raceCars
     }
 
-    fun startWinner(raceMap: List<RacingCar>) {
-        val winners: List<String> = Winner.determineWinners(raceMap)
+    fun startWinner(raceCars: List<RacingCar>) {
+        val winners: List<String> = Winner.determineWinners(raceCars)
         ResultView.showWinner(winners)
     }
 }
