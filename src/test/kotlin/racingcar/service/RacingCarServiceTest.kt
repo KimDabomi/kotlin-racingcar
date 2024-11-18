@@ -79,7 +79,7 @@ class RacingCarServiceTest : StringSpec({
         mockkObject(Winner)
         mockkObject(ResultView)
 
-        every { Winner.getWinners(racingCars) } returns listOf("kim", "da")
+        every { Winner.determineWinners(racingCars) } returns listOf("kim", "da")
 
         service.startWinner(racingCars)
 

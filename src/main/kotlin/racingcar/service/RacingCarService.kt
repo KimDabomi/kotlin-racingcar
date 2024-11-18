@@ -42,7 +42,7 @@ class RacingCarService(
     }
 
     fun startWinner(raceMap: List<RacingCar>) {
-        val winners: List<String> = Winner.getWinners(raceMap)
+        val winners: List<String> = Winner.determineWinners(raceMap)
         ResultView.showWinner(winners)
     }
 }
