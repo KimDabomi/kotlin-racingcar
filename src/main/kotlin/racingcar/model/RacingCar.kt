@@ -18,7 +18,7 @@ class RacingCar(val carName: String) {
     }
 
     companion object {
-        fun getCarNames(userCarName: String): List<String> {
+        fun getRacingCarNames(userCarName: String): List<String> {
             val carNameList: MutableList<String> = ArrayList()
             val carNames = splitCarName(userCarName)
             for (carName in carNames) {

@@ -11,19 +11,19 @@ class RacingCarService(
     private val tryCount: TryCount,
     private val forward: Forward,
 ) {
-    fun getRacingCars(): List<String> {
+    fun readRacingCarNames(): List<String> {
         InputView.readNumberCars()
         val userInput: String = readln()
-        return RacingCar.getCarNames(userInput)
+        return RacingCar.getRacingCarNames(userInput)
     }
 
-    fun startTryCount(): Int {
+    fun readTryCount(): Int {
         InputView.readTryCount()
         val userInput: Int = readln().toInt()
         return tryCount.getTryCount(userInput)
     }
 
-    fun startRace(
+    fun runRace(
         carNames: List<String>,
         tryCount: Int,
     ): List<RacingCar> {
@@ -41,7 +41,7 @@ class RacingCarService(
         return raceCars
     }
 
-    fun startWinner(raceCars: List<RacingCar>) {
+    fun determineAndShowWinners(raceCars: List<RacingCar>) {
         val winners: List<String> = Winner.determineWinners(raceCars)
         ResultView.showWinner(winners)
     }
