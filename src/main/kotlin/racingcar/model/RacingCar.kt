@@ -11,10 +11,6 @@ class RacingCar(val carName: String, var position: Int = 0) {
         }
     }
 
-    override fun toString(): String {
-        return "$carName: ${"-".repeat(position)}"
-    }
-
     companion object {
         private const val SPLIT_UNIT = ","
         private const val TYPE_AND_SIZE = "^[a-z]{1,5}$"

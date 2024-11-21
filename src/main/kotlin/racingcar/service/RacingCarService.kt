@@ -1,5 +1,6 @@
 package racingcar.service
 
+import racingcar.dto.RacingCarDto
 import racingcar.model.Forward
 import racingcar.model.RacingCar
 import racingcar.model.TryCount
@@ -35,7 +36,7 @@ class RacingCarService(
             raceCars.forEach { car ->
                 car.race { forward.pickRandomNumberInRange() >= 4 }
             }
-            ResultView.showRacingResult(raceCars)
+            ResultView.showRacingResult(raceCars.map { RacingCarDto(it.carName, it.position) })
         }
 
         return raceCars
