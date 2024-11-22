@@ -8,6 +8,8 @@ import racingcar.model.Winner
 import racingcar.view.InputView
 import racingcar.view.ResultView
 
+private const val DELIMITER = ","
+
 class RacingCarService(
     private val tryCount: TryCount,
     private val forward: Forward,
@@ -15,7 +17,7 @@ class RacingCarService(
     fun readRacingCarNames(): List<String> {
         InputView.readNumberCars()
         val userInput: String = readln()
-        return RacingCar.getRacingCarNames(userInput)
+        return userInput.split(DELIMITER).map { it.trim() }.filter { it.isNotEmpty() }
     }
 
     fun readTryCount(): Int {
@@ -30,7 +32,7 @@ class RacingCarService(
     ): List<RacingCar> {
         ResultView.showRacingStart()
 
-        val raceCars = carNames.map { RacingCar(it) }
+        val raceCars = carNames.map { RacingCar.from(it) }
 
         for (i in 0 until tryCount) {
             raceCars.forEach { car ->

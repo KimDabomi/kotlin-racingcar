@@ -70,10 +70,10 @@ class RacingCarServiceTest : StringSpec({
 
         val racingCars =
             listOf(
-                RacingCar("kim").apply { position = 4 },
-                RacingCar("da").apply { position = 4 },
-                RacingCar("bo").apply { position = 3 },
-                RacingCar("mi").apply { position = 2 },
+                RacingCar("kim", 4),
+                RacingCar("da", 4),
+                RacingCar("bo", 3),
+                RacingCar("mi", 2),
             )
 
         mockkObject(Winner)
